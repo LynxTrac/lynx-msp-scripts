@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-powershell:
+    name: Lint PowerShell
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: ./tools/lint.ps1
+
+  lint-bash:
+    name: Lint Bash
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+      - name: Run shellcheck
+        run: bash ./tools/lint.sh
+
+  smoke-powershell:
+    name: Smoke - Windows
+    runs-on: windows-latest
+    needs: lint-powershell
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run smoke tests
+        shell: pwsh
+        run: ./tools/smoke-windows.ps1
+
+  smoke-bash:
+    name: Smoke - Linux
+    runs-on: ubuntu-latest
+    needs: lint-bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run smoke tests
+        run: bash ./tools/smoke-linux.sh
