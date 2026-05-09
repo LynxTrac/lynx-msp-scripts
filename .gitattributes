@@ -1,0 +1,15 @@
+* text=auto
+
+# Shell scripts run on Linux; force LF regardless of checkout platform
+*.sh        text eol=lf
+
+# PowerShell scripts run on Windows
+*.ps1       text eol=crlf
+
+# Python / YAML stay LF
+*.py        text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+
+# Markdown — let git auto-detect
+*.md        text
