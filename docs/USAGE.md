@@ -254,12 +254,12 @@ Reports installed AV products via SecurityCenter2 and augments with Defender det
 
 #### `windows/software/software-inventory.ps1`
 
-Reads HKLM 32/64-bit + per-user uninstall hives; emits dedupliated JSON inventory plus a summary RESULT line.
+Reads HKLM 32/64-bit and per-user uninstall hives and produces a deduplicated inventory. By default only the `RESULT` line is written to stdout (clean for RMM custom-field capture). Pass `-OutFile` to save the JSON inventory to disk, or `-JsonToStdout` to also emit it on stdout.
 
 | Parameter | Default | Description |
 |---|---|---|
-| `-JsonOnly` | off | Suppress the trailing RESULT line |
-| `-OutFile` | none | Also write JSON to this path |
+| `-OutFile` | none | Save JSON inventory to this path |
+| `-JsonToStdout` | off | Also emit the JSON inventory on stdout (in addition to the RESULT line) |
 
 ```powershell
 .\software-inventory.ps1 -OutFile C:\Temp\inventory.json
