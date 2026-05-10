@@ -3,15 +3,17 @@
 Produces an inventory of installed software from the registry uninstall keys.
 
 .DESCRIPTION
-Reads HKLM 32-bit and 64-bit Uninstall hives plus per-user uninstall hives, emitting a
-deduplicated list with name, version, publisher, and install date. Output is JSON to
-stdout (pipe-friendly) followed by a one-line RESULT summary. Read-only.
+Reads HKLM 32-bit and 64-bit Uninstall hives plus per-user uninstall hives and emits
+a deduplicated list with name, version, publisher, and install date. By default only
+the RESULT summary line is written to stdout (so RMMs scraping the last line get a
+clean count). Pass -OutFile to save the full JSON inventory to disk, or -JsonToStdout
+to also emit the JSON on stdout. Read-only.
 
 .AUTHOR
 LynxTrac
 
 .VERSION
-1.0
+1.1
 
 .TAGS
 windows, msp, rmm, automation, inventory
@@ -19,8 +21,8 @@ windows, msp, rmm, automation, inventory
 
 [CmdletBinding()]
 param(
-    [switch] $JsonOnly,
-    [string] $OutFile
+    [string] $OutFile,
+    [switch] $JsonToStdout
 )
 
 $paths = @(
@@ -65,10 +67,9 @@ if ($OutFile) {
     }
 }
 
-if ($JsonOnly) {
+if ($JsonToStdout) {
     Write-Host $json
-} else {
-    Write-Host $json
-    Write-Host ("RESULT|host={0}|installed={1}|status=ok" -f $env:COMPUTERNAME, $count)
 }
+
+Write-Host ("RESULT|host={0}|installed={1}|status=ok" -f $env:COMPUTERNAME, $count)
 exit 0
