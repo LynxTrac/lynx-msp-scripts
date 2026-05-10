@@ -35,7 +35,7 @@ $tests = [ordered]@{
     'bitlocker-status.ps1'      = @()
     'firewall-status.ps1'       = @()
     'antivirus-status.ps1'      = @()
-    'software-inventory.ps1'    = @('-JsonOnly')
+    'software-inventory.ps1'    = @()
     'windows-update-repair.ps1' = $null                        # SKIP - irreversibly renames system folders
 }
 
